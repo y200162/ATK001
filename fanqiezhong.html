@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>番茄钟</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #timer {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            font-size: 24px;
+            margin: 0 10px;
+            padding: 10px 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="timer">25:00</div>
+    <div class="buttons">
+        <button id="start">开始</button>
+        <button id="stop">停止</button>
+        <button id="pause">暂停</button>
+        <button id="reset">重置</button>
+        <button id="addMinute">增加1分钟</button>
+        <button id="subtractMinute">减少1分钟</button>
+    </div>
+    <script>
+        let timeLeft = 1500;
+        let timerInterval = null;
+        const timerDisplay = document.getElementById("timer");
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60 < 10 ? "0" + timeLeft % 60 : timeLeft % 60;
+            timerDisplay.textContent = `${minutes}:${seconds}`;
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            } else {
+                timeLeft--;
+            }
+        }
+
+        document.getElementById("start").addEventListener("click", () => {
+            if (!timerInterval) {
+                timerInterval = setInterval(updateTimer, 1000);
+            }
+        });
+
+        document.getElementById("stop").addEventListener("click", () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeLeft = 1500;
+            updateTimer();
+        });
+
+        document.getElementById("pause").addEventListener("click", () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        });
+
+        document.getElementById("reset").addEventListener("click", () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            timeLeft = 1500;
+            updateTimer();
+        });
+
+        document.getElementById("addMinute").addEventListener("click", () => {
+            timeLeft += 60;
+            updateTimer();
+        });
+
+        document.getElementById("subtractMinute").addEventListener("click", () => {
+            if (timeLeft > 60) {
+                timeLeft -= 60;
+                updateTimer();
+            }
+        });
+    </script>
+</body>
+
+</html>
